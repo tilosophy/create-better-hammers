@@ -1,0 +1,31 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+
+[[mods]]
+modId="create_better_hammers"
+version="${modVersion}"
+displayName="Create Better Hammers"
+authors="tilosophy"
+description="Hand-hammer Create sheets on raised work surfaces."
+
+[[dependencies.create_better_hammers]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1]"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.create_better_hammers]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.233,21.2)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.create_better_hammers]]
+modId="create"
+type="required"
+versionRange="[6.0.10,6.1.0)"
+ordering="AFTER"
+side="BOTH"

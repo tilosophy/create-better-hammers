@@ -1,0 +1,12 @@
+{
+  "item.create_better_hammers.stone_hammer": "Stone Hammer",
+  "tooltip.create_better_hammers.hold_shift": "Hold Shift for more details",
+  "tooltip.create_better_hammers.hands": "Hold the hammer in your main hand and ingots in your offhand.",
+  "tooltip.create_better_hammers.surface": "Right-click the top of raised stone, smooth stone, or an anvil.",
+  "tooltip.create_better_hammers.material": "Prototype material: Iron",
+  "message.create_better_hammers.surface": "Use stone, smooth stone, or an anvil.",
+  "message.create_better_hammers.offhand": "Hold iron ingots in your offhand.",
+  "message.create_better_hammers.raised_surface": "Stand next to a raised work surface and strike the top.",
+  "message.create_better_hammers.iron_only": "This prototype hammers iron ingots only.",
+  "message.create_better_hammers.inventory_full": "Make room in your inventory for the sheet."
+}
