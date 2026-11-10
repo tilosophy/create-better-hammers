@@ -16,7 +16,7 @@ Install the same mod JAR on the Minecraft 1.21.1 client and dedicated server alo
 3. Stand beside raised stone, smooth stone, or an anvil and right-click the top. On a level floor, the work block sits on top of the floor.
 4. Each successful strike turns one ingot into one sheet and uses one durability in Survival. It also starts a 20-tick cooldown shared by both hammer tiers.
 
-Hold Shift over either hammer in your inventory for instructions. Zinc requires a matching Create pressing recipe that turns one zinc ingot into one zinc sheet or plate. If matching recipes disagree on the sheet, the hammer leaves the ingot untouched.
+Hold Shift over either hammer in your inventory for instructions. For zinc, the hammer follows the Mechanical Press's regular recipe choice when it yields exactly one guaranteed zinc sheet or plate.
 
 ## Build and test
 

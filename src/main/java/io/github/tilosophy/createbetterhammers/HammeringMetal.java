@@ -11,7 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -55,28 +54,20 @@ enum HammeringMetal {
     }
 
     private static ItemStack findZincSheet(Level level, ItemStack input) {
-        RecipeType<PressingRecipe> pressing = AllRecipeTypes.PRESSING.getType();
         var ingredient = new SingleRecipeInput(input.copyWithCount(1));
-        ItemStack sheet = ItemStack.EMPTY;
-
-        for (var entry : level.getRecipeManager().getAllRecipesFor(pressing)) {
-            PressingRecipe recipe = entry.value();
-            var outputs = recipe.getRollableResults();
-            if (outputs.size() != 1 || outputs.getFirst().getChance() != 1.0F
-                    || !recipe.matches(ingredient, level)) {
-                continue;
-            }
-
-            ItemStack candidate = outputs.getFirst().getStack();
-            if (candidate.getCount() != 1 || !isZincPlate(candidate)) {
-                continue;
-            }
-            if (!sheet.isEmpty() && !ItemStack.isSameItemSameComponents(sheet, candidate)) {
-                return ItemStack.EMPTY;
-            }
-            sheet = candidate;
+        // Use the same regular recipe lookup as Create's Mechanical Press.
+        var recipe = AllRecipeTypes.PRESSING.<SingleRecipeInput, PressingRecipe>find(ingredient, level);
+        if (recipe.isEmpty()) {
+            return ItemStack.EMPTY;
         }
-        return sheet.copy();
+
+        var outputs = recipe.get().value().getRollableResults();
+        if (outputs.size() != 1 || outputs.getFirst().getChance() != 1.0F) {
+            return ItemStack.EMPTY;
+        }
+
+        ItemStack sheet = outputs.getFirst().getStack();
+        return sheet.getCount() == 1 && isZincPlate(sheet) ? sheet.copy() : ItemStack.EMPTY;
     }
 
     private static boolean isZincPlate(ItemStack stack) {
