@@ -1,12 +1,17 @@
 {
   "item.create_better_hammers.stone_hammer": "Stone Hammer",
+  "item.create_better_hammers.iron_hammer": "Iron Hammer",
   "tooltip.create_better_hammers.hold_shift": "Hold Shift for more details",
   "tooltip.create_better_hammers.hands": "Hold the hammer in your main hand and ingots in your offhand.",
   "tooltip.create_better_hammers.surface": "Right-click the top of raised stone, smooth stone, or an anvil.",
-  "tooltip.create_better_hammers.material": "Prototype material: Iron",
+  "tooltip.create_better_hammers.stone_materials": "Flattens iron, copper, and zinc.",
+  "tooltip.create_better_hammers.iron_materials": "Flattens iron, copper, brass, gold, and zinc.",
+  "tooltip.create_better_hammers.zinc_requirement": "Zinc requires a compatible pressing recipe.",
   "message.create_better_hammers.surface": "Use stone, smooth stone, or an anvil.",
-  "message.create_better_hammers.offhand": "Hold iron ingots in your offhand.",
+  "message.create_better_hammers.offhand": "Hold the ingots in your offhand.",
   "message.create_better_hammers.raised_surface": "Stand next to a raised work surface and strike the top.",
-  "message.create_better_hammers.iron_only": "This prototype hammers iron ingots only.",
+  "message.create_better_hammers.unsupported_ingot": "This material cannot be hammered into a sheet.",
+  "message.create_better_hammers.requires_iron_hammer": "This material requires an Iron Hammer.",
+  "message.create_better_hammers.unavailable_zinc_sheet": "Zinc needs a single compatible sheet result from Create pressing recipes.",
   "message.create_better_hammers.inventory_full": "Make room in your inventory for the sheet."
 }

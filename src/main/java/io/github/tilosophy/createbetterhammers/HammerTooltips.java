@@ -14,13 +14,13 @@ public final class HammerTooltips {
 
     @SubscribeEvent
     public static void addDetails(ItemTooltipEvent event) {
-        if (!event.getItemStack().is(CreateBetterHammers.STONE_HAMMER.get())) {
+        if (!(event.getItemStack().getItem() instanceof HammerItem hammer)) {
             return;
         }
 
         String key = "tooltip." + CreateBetterHammers.ID + ".";
         if (Screen.hasShiftDown()) {
-            for (String line : new String[]{"hands", "surface", "material"}) {
+            for (String line : new String[]{"hands", "surface", hammer.materialTooltip(), "zinc_requirement"}) {
                 event.getToolTip().add(Component.translatable(key + line).withStyle(ChatFormatting.GRAY));
             }
         } else {

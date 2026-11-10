@@ -1,6 +1,5 @@
 package io.github.tilosophy.createbetterhammers;
 
-import com.simibubi.create.AllItems;
 import com.simibubi.create.AllSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,18 +14,25 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-public final class StoneHammerItem extends Item {
+public final class HammerItem extends Item {
+    private static final int STRIKE_COOLDOWN_TICKS = 20;
     private static final TagKey<Block> WORK_SURFACES = TagKey.create(Registries.BLOCK,
         ResourceLocation.fromNamespaceAndPath(CreateBetterHammers.ID, "work_surfaces"));
 
-    public StoneHammerItem(Properties properties) {
+    private final boolean ironTier;
+
+    public HammerItem(Properties properties, boolean ironTier) {
         super(properties);
+        this.ironTier = ironTier;
+    }
+
+    String materialTooltip() {
+        return ironTier ? "iron_materials" : "stone_materials";
     }
 
     @Override
@@ -40,9 +46,10 @@ public final class StoneHammerItem extends Item {
         BlockPos target = context.getClickedPos();
         ItemStack input = player.getOffhandItem();
         var surface = level.getBlockState(target);
+        HammeringMetal metal = HammeringMetal.from(input);
 
         if (!surface.is(WORK_SURFACES)) {
-            if (input.is(Items.IRON_INGOT)) {
+            if (metal != null) {
                 showMessage(player, "surface");
             }
             return InteractionResult.PASS;
@@ -60,12 +67,21 @@ public final class StoneHammerItem extends Item {
                 || target.equals(player.blockPosition())) {
             return reject(player, "raised_surface");
         }
-        if (!input.is(Items.IRON_INGOT)) {
-            return reject(player, "iron_only");
+        if (metal == null) {
+            return reject(player, "unsupported_ingot");
+        }
+        if (metal.requiresIronHammer() && !ironTier) {
+            return reject(player, "requires_iron_hammer");
+        }
+        if (player.getCooldowns().isOnCooldown(this)) {
+            return InteractionResult.FAIL;
         }
 
         if (!level.isClientSide()) {
-            ItemStack sheet = AllItems.IRON_SHEET.asStack();
+            ItemStack sheet = metal.sheet(level, input);
+            if (sheet.isEmpty()) {
+                return reject(player, "unavailable_zinc_sheet");
+            }
             Inventory inventory = player.getInventory();
             if ((inventory.getFreeSlot() < 0 && inventory.getSlotWithRemainingSpace(sheet) < 0)
                     || !inventory.add(sheet)) {
@@ -74,6 +90,9 @@ public final class StoneHammerItem extends Item {
 
             input.shrink(1);
             hammer.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+            // Share the cooldown so swapping hammer tiers cannot speed up pressing.
+            player.getCooldowns().addCooldown(CreateBetterHammers.STONE_HAMMER.get(), STRIKE_COOLDOWN_TICKS);
+            player.getCooldowns().addCooldown(CreateBetterHammers.IRON_HAMMER.get(), STRIKE_COOLDOWN_TICKS);
             // The Mechanical Press itself plays this event at 0.5 volume.
             AllSoundEvents.MECHANICAL_PRESS_ACTIVATION.playOnServer(level, target, 0.25F, 1.0F);
         }
