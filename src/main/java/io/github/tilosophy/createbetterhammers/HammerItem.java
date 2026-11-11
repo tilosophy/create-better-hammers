@@ -3,6 +3,7 @@ package io.github.tilosophy.createbetterhammers;
 import com.simibubi.create.AllSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -10,10 +11,17 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -24,15 +32,71 @@ public final class HammerItem extends Item {
     private static final TagKey<Block> WORK_SURFACES = TagKey.create(Registries.BLOCK,
         ResourceLocation.fromNamespaceAndPath(CreateBetterHammers.ID, "work_surfaces"));
 
-    private final boolean ironTier;
+    enum Tier {
+        STONE("stone_materials", 64, 9, 5),
+        IRON("iron_materials", 256, 10, 14),
+        DIAMOND("diamond_materials", 1024, 11, 10);
 
-    public HammerItem(Properties properties, boolean ironTier) {
-        super(properties);
-        this.ironTier = ironTier;
+        final String materialTooltip;
+        final int durability;
+        final int attackDamage;
+        final int enchantability;
+
+        Tier(String materialTooltip, int durability, int attackDamage, int enchantability) {
+            this.materialTooltip = materialTooltip;
+            this.durability = durability;
+            this.attackDamage = attackDamage;
+            this.enchantability = enchantability;
+        }
+    }
+
+    private final Tier tier;
+
+    HammerItem(Properties properties, Tier tier) {
+        super(properties.durability(tier.durability).attributes(ItemAttributeModifiers.builder()
+            .add(Attributes.ATTACK_DAMAGE,
+                new AttributeModifier(BASE_ATTACK_DAMAGE_ID, tier.attackDamage - 1, AttributeModifier.Operation.ADD_VALUE),
+                EquipmentSlotGroup.MAINHAND)
+            .add(Attributes.ATTACK_SPEED,
+                new AttributeModifier(BASE_ATTACK_SPEED_ID, -3.2, AttributeModifier.Operation.ADD_VALUE),
+                EquipmentSlotGroup.MAINHAND)
+            .build()));
+        this.tier = tier;
     }
 
     String materialTooltip() {
-        return ironTier ? "iron_materials" : "stone_materials";
+        return tier.materialTooltip;
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        return true;
+    }
+
+    @Override
+    public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
+    }
+
+    @Override
+    public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity defender, LivingEntity attacker) {
+        return true;
+    }
+
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return tier.enchantability;
+    }
+
+    @Override
+    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+        return enchantment.is(Enchantments.UNBREAKING) || enchantment.is(Enchantments.MENDING)
+            || enchantment.is(Enchantments.SMITE) || enchantment.is(Enchantments.BANE_OF_ARTHROPODS);
+    }
+
+    @Override
+    public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
+        return supportsEnchantment(stack, enchantment) && !enchantment.is(Enchantments.MENDING);
     }
 
     @Override
@@ -67,10 +131,10 @@ public final class HammerItem extends Item {
                 || target.equals(player.blockPosition())) {
             return reject(player, "raised_surface");
         }
-        if (metal == null) {
+        if (metal == null && tier != Tier.DIAMOND) {
             return reject(player, "unsupported_ingot");
         }
-        if (metal.requiresIronHammer() && !ironTier) {
+        if (tier == Tier.STONE && metal.requiresIronHammer()) {
             return reject(player, "requires_iron_hammer");
         }
         if (player.getCooldowns().isOnCooldown(this)) {
@@ -78,9 +142,9 @@ public final class HammerItem extends Item {
         }
 
         if (!level.isClientSide()) {
-            ItemStack sheet = metal.sheet(level, input);
+            ItemStack sheet = metal == null ? HammeringMetal.findPressedSheet(level, input) : metal.sheet(level, input);
             if (sheet.isEmpty()) {
-                return reject(player, "unavailable_zinc_sheet");
+                return reject(player, metal == HammeringMetal.ZINC ? "unavailable_zinc_sheet" : "unsupported_ingot");
             }
             Inventory inventory = player.getInventory();
             if ((inventory.getFreeSlot() < 0 && inventory.getSlotWithRemainingSpace(sheet) < 0)
@@ -91,8 +155,7 @@ public final class HammerItem extends Item {
             input.shrink(1);
             hammer.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
             // Share the cooldown so swapping hammer tiers cannot speed up pressing.
-            player.getCooldowns().addCooldown(CreateBetterHammers.STONE_HAMMER.get(), STRIKE_COOLDOWN_TICKS);
-            player.getCooldowns().addCooldown(CreateBetterHammers.IRON_HAMMER.get(), STRIKE_COOLDOWN_TICKS);
+            CreateBetterHammers.HAMMERS.forEach(item -> player.getCooldowns().addCooldown(item.get(), STRIKE_COOLDOWN_TICKS));
             // The Mechanical Press itself plays this event at 0.5 volume.
             AllSoundEvents.MECHANICAL_PRESS_ACTIVATION.playOnServer(level, target, 0.25F, 1.0F);
         }

@@ -10,16 +10,21 @@ Install the same mod JAR on the Minecraft 1.21.1 client and dedicated server alo
 | --- | --- | --- | ---: |
 | Stone | Cobblestone | Iron, copper, and compatible zinc | 64 |
 | Iron | Iron ingots | Everything Stone handles, plus brass and gold | 256 |
+| Diamond | Diamonds | Everything Iron handles, plus compatible Create pressing sheets and plates | 1,024 |
 
 1. Craft a hammer with three head materials across the top, one head material on each side of the middle row, and a stick in the center of each of the bottom two rows.
-2. Hold the hammer in your main hand and ingots in your offhand.
+2. Hold the hammer in your main hand and the material in your offhand.
 3. Stand beside raised stone, smooth stone, or an anvil and right-click the top. On a level floor, the work block sits on top of the floor.
-4. Each successful strike turns one ingot into one sheet and uses one durability in Survival. It also starts a 20-tick cooldown shared by both hammer tiers.
+4. Each successful strike turns one input item into one sheet and uses one durability in Survival. It also starts a 20-tick cooldown shared by both hammer tiers.
 
 Hold Shift over either hammer in your inventory for instructions. For zinc, the hammer follows the Mechanical Press's regular recipe choice when it yields exactly one guaranteed zinc sheet or plate.
+
+Diamond also follows the Mechanical Press's regular recipe choice for additional sheets and plates from Create, addons, and datapacks. The selected recipe must yield one guaranteed sheet or plate. Recipe packs can mark additional outputs with the `create_better_hammers:hammerable_sheets` item tag. Sequenced assembly recipes such as Create's Sturdy Sheet use a separate process.
+
+Hammers deal 9, 10, or 11 damage at full charge and recharge in about 1.25 seconds. They use vanilla attack sounds and first-person motion, disable shields like axes, and spend one durability on a landed hit. Supported enchantments are Unbreaking, Mending, Smite, and Bane of Arthropods.
 
 ## Build and test
 
 Use JDK 21. On Windows, run `gradlew.bat build` from the repository folder. On Linux or macOS, run `./gradlew build`. The JAR appears in `build/libs/`.
 
-For a playtest, compare the two tiers on brass and gold. Hold right-click or swap hammers rapidly and check that sheets arrive no faster than once per second at 20 ticks per second. Try the side of a raised block, floor-level stone, raised dirt, and a full inventory. A rejected strike should leave the ingot and durability intact. Right-clicking an anvil with an empty offhand should still open the anvil menu.
+For a playtest, compare the tiers on brass, gold, and an addon plate such as electrum. With the crosshair attack indicator enabled, compare a fully charged axe hit and hammer hit on separate mobs. Hold right-click or swap hammers rapidly and check that sheets arrive no faster than once per second at 20 ticks per second. Try the side of a raised block, floor-level stone, raised dirt, and a full inventory. A rejected strike should leave the ingot and durability intact. Right-clicking an anvil with an empty offhand should still open the anvil menu.

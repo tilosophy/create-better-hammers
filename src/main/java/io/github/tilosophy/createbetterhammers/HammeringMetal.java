@@ -1,5 +1,6 @@
 package io.github.tilosophy.createbetterhammers;
 
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import com.simibubi.create.AllItems;
@@ -22,6 +23,8 @@ enum HammeringMetal {
     BRASS("brass", true, () -> AllItems.BRASS_SHEET.asStack()),
     GOLD("gold", true, () -> AllItems.GOLDEN_SHEET.asStack());
 
+    private static final TagKey<Item> HAMMERABLE_SHEETS = TagKey.create(Registries.ITEM,
+        ResourceLocation.fromNamespaceAndPath(CreateBetterHammers.ID, "hammerable_sheets"));
     private static final TagKey<Item> ZINC_PLATES = commonTag("plates/zinc");
     private static final TagKey<Item> ZINC_ITEM_PLATES = commonTag("item/plates/zinc");
 
@@ -50,10 +53,14 @@ enum HammeringMetal {
     }
 
     ItemStack sheet(Level level, ItemStack input) {
-        return createSheet != null ? createSheet.get() : findZincSheet(level, input);
+        return createSheet != null ? createSheet.get() : findPressedSheet(level, input, HammeringMetal::isZincPlate);
     }
 
-    private static ItemStack findZincSheet(Level level, ItemStack input) {
+    static ItemStack findPressedSheet(Level level, ItemStack input) {
+        return findPressedSheet(level, input, HammeringMetal::isSheetOrPlate);
+    }
+
+    private static ItemStack findPressedSheet(Level level, ItemStack input, Predicate<ItemStack> outputMatches) {
         var ingredient = new SingleRecipeInput(input.copyWithCount(1));
         // Use the same regular recipe lookup as Create's Mechanical Press.
         var recipe = AllRecipeTypes.PRESSING.<SingleRecipeInput, PressingRecipe>find(ingredient, level);
@@ -67,7 +74,14 @@ enum HammeringMetal {
         }
 
         ItemStack sheet = outputs.getFirst().getStack();
-        return sheet.getCount() == 1 && isZincPlate(sheet) ? sheet.copy() : ItemStack.EMPTY;
+        return sheet.getCount() == 1 && outputMatches.test(sheet) ? sheet.copy() : ItemStack.EMPTY;
+    }
+
+    private static boolean isSheetOrPlate(ItemStack stack) {
+        String name = BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath();
+        return stack.is(HAMMERABLE_SHEETS)
+            || name.equals("sheet") || name.startsWith("sheet_") || name.endsWith("_sheet")
+            || name.equals("plate") || name.startsWith("plate_") || name.endsWith("_plate");
     }
 
     private static boolean isZincPlate(ItemStack stack) {

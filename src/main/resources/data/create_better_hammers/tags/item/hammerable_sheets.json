@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    {"id": "#c:plates", "required": false},
+    {"id": "#c:sheets", "required": false},
+    {"id": "#c:item/plates", "required": false}
+  ]
+}
