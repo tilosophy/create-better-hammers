@@ -25,6 +25,7 @@ public final class CreateBetterHammers {
 
     public CreateBetterHammers(IEventBus modBus) {
         ITEMS.register(modBus);
+        SturdySheetStrike.ATTACHMENTS.register(modBus);
         modBus.addListener(this::addCreativeTabContents);
     }
 

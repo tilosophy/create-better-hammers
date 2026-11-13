@@ -1,5 +1,6 @@
 package io.github.tilosophy.createbetterhammers;
 
+import com.simibubi.create.AllItems;
 import com.simibubi.create.AllSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -68,6 +69,10 @@ public final class HammerItem extends Item {
         return tier.materialTooltip;
     }
 
+    boolean isDiamond() {
+        return tier == Tier.DIAMOND;
+    }
+
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         return true;
@@ -110,9 +115,31 @@ public final class HammerItem extends Item {
         BlockPos target = context.getClickedPos();
         ItemStack input = player.getOffhandItem();
         var surface = level.getBlockState(target);
+        boolean obsidian = input.is(AllItems.POWDERED_OBSIDIAN.get());
         HammeringMetal metal = HammeringMetal.from(input);
 
+        if (!level.isClientSide()) {
+            SturdySheetStrike.checkTarget(player, target);
+        }
+        if (obsidian && surface.is(Blocks.MAGMA_BLOCK)) {
+            if (!isDiamond()) {
+                return reject(player, "requires_diamond_hammer");
+            }
+            if (context.getClickedFace() != Direction.UP || !isRaisedWorksite(player, target)) {
+                return reject(player, "raised_surface");
+            }
+            if (player.getCooldowns().isOnCooldown(this)) {
+                return InteractionResult.FAIL;
+            }
+            if (!level.isClientSide() && !strikeSturdySheet(player, target, hammer, input)) {
+                return InteractionResult.FAIL;
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide());
+        }
         if (!surface.is(WORK_SURFACES)) {
+            if (obsidian && isDiamond()) {
+                return reject(player, "sturdy_sheet_surface");
+            }
             if (metal != null) {
                 showMessage(player, "surface");
             }
@@ -126,9 +153,7 @@ public final class HammerItem extends Item {
             return InteractionResult.PASS;
         }
 
-        if (context.getClickedFace() != Direction.UP || !player.onGround()
-                || target.getY() != player.blockPosition().getY()
-                || target.equals(player.blockPosition())) {
+        if (context.getClickedFace() != Direction.UP || !isRaisedWorksite(player, target)) {
             return reject(player, "raised_surface");
         }
         if (metal == null && tier != Tier.DIAMOND) {
@@ -144,23 +169,60 @@ public final class HammerItem extends Item {
         if (!level.isClientSide()) {
             ItemStack sheet = metal == null ? HammeringMetal.findPressedSheet(level, input) : metal.sheet(level, input);
             if (sheet.isEmpty()) {
+                if (obsidian) {
+                    return reject(player, "sturdy_sheet_surface");
+                }
                 return reject(player, metal == HammeringMetal.ZINC ? "unavailable_zinc_sheet" : "unsupported_ingot");
             }
-            Inventory inventory = player.getInventory();
-            if ((inventory.getFreeSlot() < 0 && inventory.getSlotWithRemainingSpace(sheet) < 0)
-                    || !inventory.add(sheet)) {
-                return reject(player, "inventory_full");
+            if (!giveSheet(player, sheet)) {
+                return InteractionResult.FAIL;
             }
 
             input.shrink(1);
             hammer.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
-            // Share the cooldown so swapping hammer tiers cannot speed up pressing.
-            CreateBetterHammers.HAMMERS.forEach(item -> player.getCooldowns().addCooldown(item.get(), STRIKE_COOLDOWN_TICKS));
-            // The Mechanical Press itself plays this event at 0.5 volume.
-            AllSoundEvents.MECHANICAL_PRESS_ACTIVATION.playOnServer(level, target, 0.25F, 1.0F);
+            playStrike(player, target);
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide());
+    }
+
+    static boolean isRaisedWorksite(Player player, BlockPos target) {
+        return player.onGround() && target.getY() == player.blockPosition().getY()
+            && !target.equals(player.blockPosition());
+    }
+
+    private static boolean strikeSturdySheet(Player player, BlockPos target, ItemStack hammer, ItemStack input) {
+        if (!player.hasData(SturdySheetStrike.PENDING)) {
+            player.setData(SturdySheetStrike.PENDING,
+                new SturdySheetStrike(player.level(), target.immutable(), hammer, input, input.getCount()));
+            showMessage(player, "sturdy_sheet_first_strike");
+        } else {
+            if (!giveSheet(player, new ItemStack(AllItems.STURDY_SHEET.get()))) {
+                return false;
+            }
+            player.removeData(SturdySheetStrike.PENDING);
+            input.shrink(1);
+            hammer.hurtAndBreak(8, player, EquipmentSlot.MAINHAND);
+        }
+        playStrike(player, target);
+        return true;
+    }
+
+    private static boolean giveSheet(Player player, ItemStack sheet) {
+        Inventory inventory = player.getInventory();
+        if ((inventory.getFreeSlot() < 0 && inventory.getSlotWithRemainingSpace(sheet) < 0)
+                || !inventory.add(sheet)) {
+            showMessage(player, "inventory_full");
+            return false;
+        }
+        return true;
+    }
+
+    private static void playStrike(Player player, BlockPos target) {
+        // Share the cooldown so swapping hammer tiers cannot speed up pressing.
+        CreateBetterHammers.HAMMERS.forEach(item -> player.getCooldowns().addCooldown(item.get(), STRIKE_COOLDOWN_TICKS));
+        // The Mechanical Press itself plays this event at 0.5 volume.
+        AllSoundEvents.MECHANICAL_PRESS_ACTIVATION.playOnServer(player.level(), target, 0.25F, 1.0F);
     }
 
     private static InteractionResult reject(Player player, String reason) {
