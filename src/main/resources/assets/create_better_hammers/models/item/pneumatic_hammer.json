@@ -1,0 +1,145 @@
+{
+  "gui_light": "side",
+  "textures": {"hammer": "create_better_hammers:item/pneumatic_hammer", "particle": "#hammer"},
+  "display": {
+    "gui": {"rotation": [21, 25, -38], "translation": [0, 0, 0], "scale": [0.91, 0.91, 0.91]},
+    "firstperson_righthand": {"rotation": [0, -64, 15], "translation": [-1.6, 2.8, -2], "scale": [0.74, 0.74, 0.74]},
+    "firstperson_lefthand": {"rotation": [0, 116, -15], "translation": [-1.6, 2.8, -2], "scale": [0.74, 0.74, 0.74]},
+    "thirdperson_righthand": {"rotation": [0, -84, 35], "translation": [0, 3.5, 0], "scale": [0.79, 0.79, 0.79]},
+    "thirdperson_lefthand": {"rotation": [0, 96, -35], "translation": [0, 3.5, 0], "scale": [0.79, 0.79, 0.79]},
+    "ground": {"rotation": [0, 0, 0], "translation": [0, 2, 0], "scale": [0.45, 0.45, 0.45]},
+    "fixed": {"rotation": [0, 180, 0], "translation": [0, 0, 0], "scale": [0.96, 0.96, 0.96]}
+  },
+  "elements": [
+    {
+      "name": "Steel striking head",
+      "from": [2, 10.5, 6],
+      "to": [5.5, 15, 10],
+      "faces": {
+        "north": {"uv": [4, 0, 8, 4], "texture": "#hammer"},
+        "south": {"uv": [4, 0, 8, 4], "texture": "#hammer"},
+        "east": {"uv": [4, 0, 8, 4], "texture": "#hammer"},
+        "west": {"uv": [0, 0, 4, 4], "texture": "#hammer"},
+        "up": {"uv": [4, 0, 8, 4], "texture": "#hammer"},
+        "down": {"uv": [4, 0, 8, 4], "texture": "#hammer"}
+      }
+    },
+    {
+      "name": "Solid brass housing",
+      "from": [5.5, 11, 6.5],
+      "to": [10.5, 14.5, 9.5],
+      "faces": {
+        "north": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "south": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "east": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "west": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "up": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "down": {"uv": [8, 0, 12, 4], "texture": "#hammer"}
+      }
+    },
+    {
+      "name": "Upper wrench jaw",
+      "from": [10.5, 13.5, 7],
+      "to": [13, 14.5, 9],
+      "faces": {
+        "north": {"uv": [12, 0, 16, 4], "texture": "#hammer"},
+        "south": {"uv": [12, 0, 16, 4], "texture": "#hammer"},
+        "east": {"uv": [12, 0, 16, 4], "texture": "#hammer"},
+        "west": {"uv": [12, 0, 16, 4], "texture": "#hammer"},
+        "up": {"uv": [12, 0, 16, 4], "texture": "#hammer"},
+        "down": {"uv": [12, 0, 16, 4], "texture": "#hammer"}
+      }
+    },
+    {
+      "name": "Lower wrench jaw",
+      "from": [10.5, 11, 7],
+      "to": [13, 12, 9],
+      "faces": {
+        "north": {"uv": [12, 0, 16, 4], "texture": "#hammer"},
+        "south": {"uv": [12, 0, 16, 4], "texture": "#hammer"},
+        "east": {"uv": [12, 0, 16, 4], "texture": "#hammer"},
+        "west": {"uv": [12, 0, 16, 4], "texture": "#hammer"},
+        "up": {"uv": [12, 0, 16, 4], "texture": "#hammer"},
+        "down": {"uv": [12, 0, 16, 4], "texture": "#hammer"}
+      }
+    },
+    {
+      "name": "Diamond inlay mount",
+      "from": [7.25, 12, 6.45],
+      "to": [8.75, 13.5, 9.55],
+      "faces": {
+        "north": {"uv": [8, 4, 12, 8], "texture": "#hammer"},
+        "south": {"uv": [8, 4, 12, 8], "texture": "#hammer"},
+        "east": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "west": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "up": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "down": {"uv": [8, 0, 12, 4], "texture": "#hammer"}
+      }
+    },
+    {
+      "name": "Copper exhaust",
+      "from": [8, 14.5, 7.5],
+      "to": [9.5, 15.25, 8.5],
+      "faces": {
+        "north": {"uv": [12, 4, 16, 8], "texture": "#hammer"},
+        "south": {"uv": [12, 4, 16, 8], "texture": "#hammer"},
+        "east": {"uv": [12, 4, 16, 8], "texture": "#hammer"},
+        "west": {"uv": [12, 4, 16, 8], "texture": "#hammer"},
+        "up": {"uv": [0, 8, 4, 12], "texture": "#hammer"},
+        "down": {"uv": [12, 4, 16, 8], "texture": "#hammer"}
+      }
+    },
+    {
+      "name": "Handle collar",
+      "from": [6.75, 10, 6.75],
+      "to": [9.25, 11, 9.25],
+      "faces": {
+        "north": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "south": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "east": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "west": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "up": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "down": {"uv": [8, 0, 12, 4], "texture": "#hammer"}
+      }
+    },
+    {
+      "name": "Handle",
+      "from": [7.25, 0.75, 7.25],
+      "to": [8.75, 10, 8.75],
+      "faces": {
+        "north": {"uv": [0, 4, 4, 8], "texture": "#hammer"},
+        "south": {"uv": [0, 4, 4, 8], "texture": "#hammer"},
+        "east": {"uv": [0, 4, 4, 8], "texture": "#hammer"},
+        "west": {"uv": [0, 4, 4, 8], "texture": "#hammer"},
+        "up": {"uv": [0, 4, 4, 8], "texture": "#hammer"},
+        "down": {"uv": [0, 4, 4, 8], "texture": "#hammer"}
+      }
+    },
+    {
+      "name": "Leather wrap",
+      "from": [7.2, 1.5, 7.2],
+      "to": [8.8, 5.75, 8.8],
+      "faces": {
+        "north": {"uv": [4, 4, 8, 8], "texture": "#hammer"},
+        "south": {"uv": [4, 4, 8, 8], "texture": "#hammer"},
+        "east": {"uv": [4, 4, 8, 8], "texture": "#hammer"},
+        "west": {"uv": [4, 4, 8, 8], "texture": "#hammer"},
+        "up": {"uv": [4, 4, 8, 8], "texture": "#hammer"},
+        "down": {"uv": [4, 4, 8, 8], "texture": "#hammer"}
+      }
+    },
+    {
+      "name": "End cap",
+      "from": [7.1, 0, 7.1],
+      "to": [8.9, 0.75, 8.9],
+      "faces": {
+        "north": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "south": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "east": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "west": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "up": {"uv": [8, 0, 12, 4], "texture": "#hammer"},
+        "down": {"uv": [8, 0, 12, 4], "texture": "#hammer"}
+      }
+    }
+  ]
+}

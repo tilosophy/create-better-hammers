@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.tilosophy.createbetterhammers.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": ["WrenchItemMixin"],
+  "client": ["RadialWrenchHandlerMixin"],
+  "injectors": {"defaultRequire": 1}
+}

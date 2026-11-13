@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": ["GIG", "CHC", " W "],
+  "key": {
+    "G": {"item": "create:golden_sheet"},
+    "I": {"item": "create:iron_sheet"},
+    "C": {"item": "create:cogwheel"},
+    "H": {"item": "create_better_hammers:diamond_hammer"},
+    "W": {"item": "create:wrench"}
+  },
+  "result": {"id": "create_better_hammers:pneumatic_hammer", "count": 1}
+}
