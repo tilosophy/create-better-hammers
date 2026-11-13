@@ -36,7 +36,8 @@ public final class HammerItem extends Item {
     enum Tier {
         STONE("stone_materials", 64, 9, 5),
         IRON("iron_materials", 256, 10, 14),
-        DIAMOND("diamond_materials", 1024, 11, 10);
+        DIAMOND("diamond_materials", 1024, 11, 10),
+        PNEUMATIC("diamond_materials", 1024, 11, 10);
 
         final String materialTooltip;
         final int durability;
@@ -69,8 +70,20 @@ public final class HammerItem extends Item {
         return tier.materialTooltip;
     }
 
-    boolean isDiamond() {
-        return tier == Tier.DIAMOND;
+    boolean isPneumatic() {
+        return tier == Tier.PNEUMATIC;
+    }
+
+    private boolean handlesGenericSheets() {
+        return tier == Tier.DIAMOND || isPneumatic();
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        if (isPneumatic()) {
+            return AllItems.WRENCH.get().useOn(context);
+        }
+        return super.useOn(context);
     }
 
     @Override
@@ -80,7 +93,7 @@ public final class HammerItem extends Item {
 
     @Override
     public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
+        spendStrikeWear(stack, attacker);
     }
 
     @Override
@@ -122,8 +135,8 @@ public final class HammerItem extends Item {
             SturdySheetStrike.checkTarget(player, target);
         }
         if (obsidian && surface.is(Blocks.MAGMA_BLOCK)) {
-            if (!isDiamond()) {
-                return reject(player, "requires_diamond_hammer");
+            if (!isPneumatic()) {
+                return reject(player, "requires_pneumatic_hammer");
             }
             if (context.getClickedFace() != Direction.UP || !isRaisedWorksite(player, target)) {
                 return reject(player, "raised_surface");
@@ -134,10 +147,10 @@ public final class HammerItem extends Item {
             if (!level.isClientSide() && !strikeSturdySheet(player, target, hammer, input)) {
                 return InteractionResult.FAIL;
             }
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return confirmedStrike(level);
         }
         if (!surface.is(WORK_SURFACES)) {
-            if (obsidian && isDiamond()) {
+            if (obsidian && handlesGenericSheets()) {
                 return reject(player, "sturdy_sheet_surface");
             }
             if (metal != null) {
@@ -156,10 +169,7 @@ public final class HammerItem extends Item {
         if (context.getClickedFace() != Direction.UP || !isRaisedWorksite(player, target)) {
             return reject(player, "raised_surface");
         }
-        if (metal == null && tier != Tier.DIAMOND) {
-            return reject(player, "unsupported_ingot");
-        }
-        if (tier == Tier.STONE && metal.requiresIronHammer()) {
+        if (metal != null && tier == Tier.STONE && metal.requiresIronHammer()) {
             return reject(player, "requires_iron_hammer");
         }
         if (player.getCooldowns().isOnCooldown(this)) {
@@ -168,6 +178,9 @@ public final class HammerItem extends Item {
 
         if (!level.isClientSide()) {
             ItemStack sheet = metal == null ? HammeringMetal.findPressedSheet(level, input) : metal.sheet(level, input);
+            if (metal == null && !handlesGenericSheets() && !sheet.isEmpty()) {
+                return reject(player, "requires_diamond_hammer");
+            }
             if (sheet.isEmpty()) {
                 if (obsidian) {
                     return reject(player, "sturdy_sheet_surface");
@@ -179,11 +192,22 @@ public final class HammerItem extends Item {
             }
 
             input.shrink(1);
-            hammer.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+            spendStrikeWear(hammer, player);
             playStrike(player, target);
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return confirmedStrike(level);
+    }
+
+    private void spendStrikeWear(ItemStack hammer, LivingEntity user) {
+        if (!isPneumatic() || !PneumaticPower.spendAir(user)) {
+            hammer.hurtAndBreak(1, user, EquipmentSlot.MAINHAND);
+        }
+    }
+
+    private static InteractionResult confirmedStrike(Level level) {
+        // The server's successful interaction sends the swing to the acting client.
+        return level.isClientSide() ? InteractionResult.CONSUME : InteractionResult.SUCCESS;
     }
 
     static boolean isRaisedWorksite(Player player, BlockPos target) {

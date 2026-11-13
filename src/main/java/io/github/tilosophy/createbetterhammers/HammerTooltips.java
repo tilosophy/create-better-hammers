@@ -23,8 +23,10 @@ public final class HammerTooltips {
             for (String line : new String[]{"hands", "surface", hammer.materialTooltip(), "zinc_requirement"}) {
                 event.getToolTip().add(Component.translatable(key + line).withStyle(ChatFormatting.GRAY));
             }
-            if (hammer.isDiamond()) {
-                event.getToolTip().add(Component.translatable(key + "sturdy_sheet").withStyle(ChatFormatting.GRAY));
+            if (hammer.isPneumatic()) {
+                for (String line : new String[]{"sturdy_sheet", "wrench", "backtank"}) {
+                    event.getToolTip().add(Component.translatable(key + line).withStyle(ChatFormatting.GRAY));
+                }
             }
         } else {
             event.getToolTip().add(Component.translatable(key + "hold_shift").withStyle(ChatFormatting.GRAY));
