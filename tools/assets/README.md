@@ -18,3 +18,9 @@ The built-in image-generation tool produced the original atlas, a simplification
 The pneumatic gear is wooden with a metal hub, recessed behind overlapping copper framing. Copper pivot mounts connect the frame visually to the wrench jaws; their steel pins remain distinct. The old cover strips and side pipe are removed. A single pipe runs underneath from the steel striker into the handle socket. The approved pneumatic display transforms and jaw geometry are preserved.
 
 See `docs/playtests/workshop-visual-review.md` for the review scope and recorded player checks. This checkpoint changes visuals only; it is not a new release candidate.
+
+## Follow-up refinement
+
+The underside pipe is 0.50 units thick, with larger fittings. A continuous copper casting replaces each separate rear frame rail/pivot plate. Diamond has an iron handle collar and wraparound central cuff.
+
+`diamond_hammer_gem.png` is a new original 16×16 texture used only by the Diamond Hammer. It was generated with the built-in image tool and exported by nearest-neighbour scaling. Prompt: one edge-to-edge cyan/teal gem swatch at a logical 16×16 resolution, four or five broad angular planes, restrained pale highlights, no iron-like mottling, noise, scratches, glow, frame or rendered tool. Other material tiles are unchanged. See `docs/playtests/workshop-refinement.md` for the visual checks.

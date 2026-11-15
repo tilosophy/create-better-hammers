@@ -7,7 +7,7 @@
   "gui_light": "side",
   "flip_v": true,
   "textures": {
-    "particle": "create_better_hammers:item/pneumatic_diamond"
+    "particle": "create_better_hammers:item/diamond_hammer_gem"
   },
   "display": {
     "ground": {

@@ -21,7 +21,7 @@ map_Kd create_better_hammers:item/pneumatic_wood
 newmtl diamond
 Kd 1 1 1
 Ka 0 0 0
-map_Kd create_better_hammers:item/pneumatic_diamond
+map_Kd create_better_hammers:item/diamond_hammer_gem
 
 newmtl iron
 Kd 1 1 1

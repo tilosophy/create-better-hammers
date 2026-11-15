@@ -36,8 +36,15 @@ for tier in ('stone','iron','diamond'):
         m.box('head_body',[4.12,10.48,6.35],[11.88,14.47,9.65],tier,.22,'x')
         for name,x0,x1 in [('forward_face',3.02,4.45),('rear_face',11.55,12.98)]:
             m.box(name,[x0,10.20,6.10],[x1,14.75,9.90],tier,.43 if tier=='iron' else .58,'x')
-        m.box('handle_socket',[7.02,9.65,7.02],[8.98,10.54,8.98],tier,.18,'y')
+        if tier=='diamond':
+            # Iron socket and wraparound band retain the gemstone head.
+            # Both diamond striking ends stay exposed; no decorative fasteners.
+            m.box('iron_handle_collar',[7.02,8.90,7.02],[8.98,10.60,8.98],'iron',.18,'y')
+            m.box('iron_head_cuff',[7.02,10.24,6.14],[8.98,14.71,9.86],'iron',.32,'x')
+        else:
+            m.box('handle_socket',[7.02,9.65,7.02],[8.98,10.54,8.98],tier,.18,'y')
         top=14.47
+        if tier=='diamond': top=14.71
     # The seated wooden tenon and wedge establish how the head is attached.
     m.box('handle_eye',[7.02,top-.04,7.06],[8.98,top+.045,8.94],'charcoal',.18,'y')
     m.box('wood_tenon',[7.31,top+.025,7.32],[8.69,top+.17,8.68],'wood',.13,'y')
@@ -47,5 +54,5 @@ for tier in ('stone','iron','diamond'):
     model={'loader':'neoforge:obj','model':'create_better_hammers:models/item/'+stem+'.obj',
            'automatic_culling':False,'shade_quads':True,'emissive_ambient':False,
            'gui_light':'side','flip_v':True,
-           'textures':{'particle':'create_better_hammers:item/pneumatic_'+tier},'display':display}
+           'textures':{'particle':'create_better_hammers:item/'+('diamond_hammer_gem' if tier=='diamond' else 'pneumatic_'+tier)},'display':display}
     (MODELS/(stem+'.json')).write_text(json.dumps(model,indent=2)+'\n')

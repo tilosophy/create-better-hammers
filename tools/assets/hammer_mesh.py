@@ -133,7 +133,8 @@ def save(stem):
     lines[2]='mtllib '+stem+'.mtl'
     (MODELS/(stem+'.obj')).write_text('\n'.join(lines)+'\n')
     (MODELS/(stem+'.mtl')).write_text('\n'.join(
-        f'newmtl {n}\nKd 1 1 1\nKa 0 0 0\nmap_Kd create_better_hammers:item/pneumatic_{n}\n'
+        f'newmtl {n}\nKd 1 1 1\nKa 0 0 0\nmap_Kd create_better_hammers:item/'+
+        ('diamond_hammer_gem' if stem=='diamond_hammer' and n=='diamond' else 'pneumatic_'+n)+'\n'
         for n in materials))
     print(f'{stem}: {len(parts)} parts, {face_count} faces')
 

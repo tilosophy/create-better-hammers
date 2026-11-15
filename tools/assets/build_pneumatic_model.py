@@ -29,7 +29,6 @@ for side,sign in [('near',1),('far',-1)]:
         ('top',[5.3,13.86,z0],[9.65,14.65,z1]),
         ('bottom',[5.3,10.05,z0],[9.65,10.85,z1]),
         ('front',[5.3,10.85,z0],[6.02,13.86,z1]),
-        ('rear',[8.94,10.85,z0],[9.65,13.86,z1]),
     ]: box(side+'_'+tag+'_frame',a,b,'copper',.08)
     for j,(rx,ry) in enumerate([(5.59,14.28),(9.35,14.28),(5.59,10.43),(9.35,10.43)]):
         rz0,rz1=zz(10.025,10.12)
@@ -44,17 +43,21 @@ jaw=[(9.40,11.00),(9.40,13.80),(10.12,14.75),(11.15,15.18),
      (12.38,9.68),(11.15,9.68),(10.12,10.11)]
 prism('open_wrench',jaw,6.77,9.23,'frame')
 
-# Pivot plates overlap the wrench root, leaving the jaw silhouette/opening intact.
-for side,z0,z1 in [('near',9.24,9.48),('far',6.52,6.76)]:
-    box(side+'_pivot_plate',[9.28,11.68,z0],[10.65,13.18,z1],'copper',.25)
-    disc(side+'_pivot_pin',10.0,12.43,z0-.04,z1+.04,.34,'iron',8)
+# Rear frame rail and pivot mount are one continuous copper casting.
+# Its outer face aligns with the other frame rails; its depth seats into the jaw.
+mount=[(8.94,10.85),(9.65,10.85),(9.65,11.68),(10.40,11.68),
+       (10.65,11.93),(10.65,12.93),(10.40,13.18),(9.65,13.18),
+       (9.65,13.86),(8.94,13.86)]
+for side,z0,z1,p0,p1 in [('near',9.18,10.02,10.02,10.16),('far',5.98,6.82,5.84,5.98)]:
+    prism(side+'_frame_pivot_casting',mount,z0,z1,'copper')
+    disc(side+'_pivot_pin',10.0,12.43,p0,p1,.34,'iron',8)
 
 # A centreline pipe beneath the head joins striker underside to handle socket.
 # Both fittings are embedded in the parts they serve; the connection is visible from either side.
-box('pipe_front_fitting',[4.10,9.65,7.66],[4.80,10.10,8.34],'copper',.12,'y')
-box('pipe_drop',[4.31,9.05,7.86],[4.59,9.70,8.14],'copper',.04,'y')
-box('pipe_underside',[4.31,8.96,7.86],[7.05,9.24,8.14],'copper',.04,'x')
-box('pipe_socket_fitting',[6.80,8.75,7.66],[7.18,9.45,8.34],'copper',.12,'x')
+box('pipe_front_fitting',[3.97,9.54,7.52],[4.93,10.12,8.48],'copper',.14,'y')
+box('pipe_drop',[4.20,8.98,7.75],[4.70,9.72,8.25],'copper',.07,'y')
+box('pipe_underside',[4.20,8.85,7.75],[7.12,9.35,8.25],'copper',.07,'x')
+box('pipe_socket_fitting',[6.72,8.62,7.52],[7.22,9.58,8.48],'copper',.14,'x')
 
 # Two low rivets secure the top plate; no ambiguous vent protrusion.
 for x in (6.1,8.8):
