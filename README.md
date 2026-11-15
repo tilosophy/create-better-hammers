@@ -4,6 +4,8 @@ Adds hand hammers to Create for making metal sheets without a stationary Mechani
 
 ## Playtest
 
+Current candidate: **0.1.0-alpha.8**. This visual-only update replaces the Pneumatic Hammer's model and textures with a solid 3D head, a diamond end plate, an open rear wrench, and pixel-art brass, steel, copper, and wood materials. It preserves alpha.7 gameplay and all other hammer visuals. See the [short visual testing protocol](docs/playtests/alpha.8.md).
+
 Install the same mod JAR on the Minecraft 1.21.1 client and dedicated server alongside NeoForge 21.1.233 or newer in the 21.1 series and Create 6.0.10.
 
 | Hammer | Head material | Sheets | Durability |
