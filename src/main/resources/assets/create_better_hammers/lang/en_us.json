@@ -18,10 +18,11 @@
   "message.create_better_hammers.requires_diamond_hammer": "This material requires a Diamond Hammer or better.",
   "message.create_better_hammers.sturdy_sheet_surface": "Use a raised magma block to hammer Powdered Obsidian into a Sturdy Sheet.",
   "message.create_better_hammers.sturdy_sheet_first_strike": "Sturdy Sheet: 1 of 2 strikes",
+  "message.create_better_hammers.sturdy_sheet_complete": "Sturdy Sheet crafted.",
   "message.create_better_hammers.unavailable_zinc_sheet": "The selected Create pressing recipe must yield one zinc sheet.",
   "message.create_better_hammers.inventory_full": "Make room in your inventory for the sheet.",
   "item.create_better_hammers.pneumatic_hammer": "Pneumatic Hammer",
   "tooltip.create_better_hammers.wrench": "Works as a Create wrench on machines and contraptions.",
-  "tooltip.create_better_hammers.backtank": "A charged backtank speeds up combat recovery and powers ordinary strikes.",
+  "tooltip.create_better_hammers.backtank": "A backtank with air adds +1 attack damage, speeds up combat recovery, and powers ordinary strikes.",
   "message.create_better_hammers.requires_pneumatic_hammer": "Sturdy Sheets require a Pneumatic Hammer."
 }

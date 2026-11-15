@@ -227,6 +227,7 @@ public final class HammerItem extends Item {
             player.removeData(SturdySheetStrike.PENDING);
             input.shrink(1);
             hammer.hurtAndBreak(8, player, EquipmentSlot.MAINHAND);
+            showMessage(player, "sturdy_sheet_complete");
         }
         playStrike(player, target);
         return true;

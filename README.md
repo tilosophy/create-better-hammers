@@ -4,7 +4,7 @@ Adds hand hammers to Create for making metal sheets without a stationary Mechani
 
 ## Playtest
 
-Current candidate: **0.1.0-alpha.8**. This visual-only update replaces the Pneumatic Hammer's model and textures with a solid 3D head, a diamond end plate, an open rear wrench, and pixel-art brass, steel, copper, and wood materials. It preserves alpha.7 gameplay and all other hammer visuals. See the [short visual testing protocol](docs/playtests/alpha.8.md).
+Current candidate: **0.1.0-alpha.9**. All four tiers now have physical depth. The Pneumatic Hammer keeps its approved hand pose, with revised materials, a recessed steel cog, wrench pivot and connected air pipe. This candidate also adds the Sturdy Sheet completion message and +1 powered attack damage. See the [short testing protocol](docs/playtests/alpha.9.md).
 
 Install the same mod JAR on the Minecraft 1.21.1 client and dedicated server alongside NeoForge 21.1.233 or newer in the 21.1 series and Create 6.0.10.
 
@@ -30,7 +30,7 @@ In a crafting table, place Gold Sheet, Iron Sheet, and Gold Sheet across the top
 
 Use the Pneumatic Hammer to rotate and sneak-pick up Create machines. It also works with Create's radial rotation menu and its instant left-click pickup of plain minecarts in Survival.
 
-A charged Create backtank spends air on ordinary sheet strikes and landed hits, in place of durability. The Pneumatic Hammer deals 11 damage at full charge and recharges in about 1.25 seconds without air or 1 second with air. Sheet hammering keeps its usual 20-tick cooldown.
+A Create backtank with air spends air on ordinary sheet strikes and landed hits, in place of durability. The Pneumatic Hammer deals 11 damage at full charge without air, or 12 with air, and recharges in about 1.25 seconds without air or 1 second with air. These bonuses apply only while holding the Pneumatic Hammer in the main hand. Sheet hammering keeps its usual 20-tick cooldown. A fully charged attack means waiting for the attack indicator to refill, then left-clicking; there is no hold-to-charge action.
 
 ### Sturdy Sheets
 
