@@ -61,7 +61,9 @@ public final class PreviewCapture {
         if (ticks == 310) capture("diamond-comparison");
         if (ticks == 340) mc.setScreen(new Review("Hammer family", null));
         if (ticks == 375) capture("family");
-        if (ticks == 405) mc.stop();
+        if (ticks == 405) mc.setScreen(new Review("Handle ends and wedges", "tops"));
+        if (ticks == 440) capture("handle-tops");
+        if (ticks == 470) mc.stop();
     }
     private static final class Review extends Screen {
         private final String name;
@@ -70,7 +72,14 @@ public final class PreviewCapture {
         @Override public void render(GuiGraphics g, int mx, int my, float partial) {
             g.fill(0, 0, width, height, 0xff202830);
             g.drawCenteredString(font, title, width / 2, 12, 0xffffff);
-            if (name != null) {
+            if ("tops".equals(name)) {
+                String[] tiers = {"stone", "iron", "diamond"};
+                for (int i = 0; i < 3; i++) {
+                    float x = width * (i + .5f) / 3;
+                    g.drawCenteredString(font, tiers[i], (int)x, 30, 0xffffff);
+                    draw(g, item(tiers[i] + "_hammer", 3), x, height * .56f, Math.min(width / 60f, height / 25f));
+                }
+            } else if (name != null) {
                 g.drawCenteredString(font, "Previous", width / 4, 30, 0xffffff);
                 g.drawCenteredString(font, "Refined", width * 3 / 4, 30, 0xffffff);
                 draw(g, item(name, 1), width / 4f, height * .56f, Math.min(width / 42f, height / 25f));

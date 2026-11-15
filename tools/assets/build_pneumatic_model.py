@@ -1,5 +1,6 @@
 """Build the pneumatic workshop revision without changing its approved pose."""
 from hammer_mesh import box, prism, disc, gear, save
+import hammer_mesh as mesh
 import math
 
 # Same diagonal grip centreline as the approved diamond sprite.
@@ -24,12 +25,6 @@ for side,sign in [('near',1),('far',-1)]:
     gear(side+'_main_drive',7.48,12.35,dz0,dz1,1.60,'cogwood',12,0)
     hz0,hz1=zz(9.76,9.91)
     disc(side+'_main_hub',7.48,12.35,hz0,hz1,.33,'iron',8)
-    z0,z1=zz(9.85,10.02)
-    for tag,a,b in [
-        ('top',[5.3,13.86,z0],[9.65,14.65,z1]),
-        ('bottom',[5.3,10.05,z0],[9.65,10.85,z1]),
-        ('front',[5.3,10.85,z0],[6.02,13.86,z1]),
-    ]: box(side+'_'+tag+'_frame',a,b,'copper',.08)
     for j,(rx,ry) in enumerate([(5.59,14.28),(9.35,14.28),(5.59,10.43),(9.35,10.43)]):
         rz0,rz1=zz(10.025,10.12)
         box(side+'_fastener_'+str(j),[rx-.12,ry-.12,rz0],[rx+.12,ry+.12,rz1],'iron',.04)
@@ -43,13 +38,28 @@ jaw=[(9.40,11.00),(9.40,13.80),(10.12,14.75),(11.15,15.18),
      (12.38,9.68),(11.15,9.68),(10.12,10.11)]
 prism('open_wrench',jaw,6.77,9.23,'frame')
 
-# Rear frame rail and pivot mount are one continuous copper casting.
-# Its outer face aligns with the other frame rails; its depth seats into the jaw.
-mount=[(8.94,10.85),(9.65,10.85),(9.65,11.68),(10.40,11.68),
+# One frame with a real aperture and an integrated pivot lug. All cap patches
+# share a UV projection and plane; there are no bevels or walls between rails.
+outer=[(5.30,10.05),(9.65,10.05),(9.65,11.68),(10.40,11.68),
        (10.65,11.93),(10.65,12.93),(10.40,13.18),(9.65,13.18),
-       (9.65,13.86),(8.94,13.86)]
+       (9.65,14.65),(5.30,14.65)]
+inner=[(6.02,10.85),(8.94,10.85),(8.94,13.86),(6.02,13.86)]
+patches=[
+    [outer[0],outer[1],inner[1],inner[0]],
+    [outer[1],*outer[2:9],inner[2],inner[1]],
+    [outer[8],outer[9],inner[3],inner[2]],
+    [outer[9],outer[0],inner[0],inner[3]],
+]
 for side,z0,z1,p0,p1 in [('near',9.18,10.02,10.02,10.16),('far',5.98,6.82,5.84,5.98)]:
-    prism(side+'_frame_pivot_casting',mount,z0,z1,'copper')
+    mesh.group(side+'_continuous_frame_and_pivot')
+    mesh.group_bounds=([5.30,10.05,z0],[10.65,14.65,z1])
+    for patch in patches:
+        for a,b,c in mesh.triangulate(patch):
+            mesh.face([(*patch[i],z0) for i in (c,b,a)],'copper')
+            mesh.face([(*patch[i],z1) for i in (a,b,c)],'copper')
+    for boundary in (outer,inner[::-1]):
+        for a,b in zip(boundary,boundary[1:]+boundary[:1]):
+            mesh.face([(*a,z0),(*b,z0),(*b,z1),(*a,z1)],'copper')
     disc(side+'_pivot_pin',10.0,12.43,p0,p1,.34,'iron',8)
 
 # A centreline pipe beneath the head joins striker underside to handle socket.

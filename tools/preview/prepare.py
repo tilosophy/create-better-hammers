@@ -34,22 +34,24 @@ for path in files:
     dest.write_bytes(data)
 models = pack / 'assets/create_better_hammers/models/item'
 models.mkdir(parents=True, exist_ok=True)
-for tier in ('diamond', 'pneumatic'):
+for tier in ('stone', 'iron', 'diamond', 'pneumatic'):
     stem = tier + '_hammer'
     original = json.loads((repo / base / 'models/item' / (stem + '.json')).read_text())
     root = json.loads(json.dumps(original))
     root['overrides'] = [
         {'predicate': {'custom_model_data': i}, 'model': 'create_better_hammers:item/' + tier + '_' + label}
-        for i, label in ((1, 'before'), (2, 'after'))]
+        for i, label in ((1, 'before'), (2, 'after'), (3, 'top'))]
     (models / (stem + '.json')).write_text(json.dumps(root))
-    for label in ('before', 'after'):
+    for label in ('before', 'after', 'top'):
         view = json.loads(json.dumps(original))
         view['display']['gui']['rotation'] = [12, 25, 45]
         view['display']['gui']['scale'] = [.8] * 3
+        if label == 'top':
+            view['display']['gui']['rotation'] = [65, 25, 45]
         if label == 'before':
             view['model'] = 'hammer_review:models/item/' + stem + '.obj'
         (models / (tier + '_' + label + '.json')).write_text(json.dumps(view))
 (run / 'options.txt').write_text(
     'version:3955\nresourcePacks:["vanilla","mod_resources","file/refinement-review"]\n'
-    'renderDistance:4\nsimulationDistance:5\nmaxFps:60\nguiScale:2\nfullscreen:false\npauseOnLostFocus:false\nonboardAccessibility:false\n')
+    'renderDistance:4\nsimulationDistance:5\nmaxFps:60\nguiScale:2\nfullscreen:false\npauseOnLostFocus:false\nonboardAccessibility:false\ntutorialStep:none\n')
 print('Prepared preview-only assets and options. Existing saves were not modified.')

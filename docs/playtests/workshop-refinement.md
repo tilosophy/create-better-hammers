@@ -26,3 +26,14 @@ This revision does not introduce new combat, crafting or air-consumption behavio
 - Confirmed Stone/Iron models and pre-existing textures are unchanged, and all four handheld display transforms match the previous revision.
 - Checked mesh indices, deterministic generation, and whitespace. No gameplay regression suite was rerun for this visual-only checkpoint.
 - The tools/preview helpers are opt-in development sources; they must not be packaged in a release. Run a clean normal build for the next candidate.
+
+## Follow-up: cuff border and continuous side frame
+
+- Widened the diamond head cuff from 1.960 to 2.352 model units: 0.196 (10% of its former width) toward each striking end. The handle opening and wooden end stay the same size.
+- Replaced separate beveled copper rails and pivot lug with one closed frame mesh per side, including the cog aperture and pivot support. A single planar texture projection spans each frame, eliminating independent rail seams and repeated edge shading.
+- Confirmed Stone, Iron and Diamond all retain the same exposed wooden tenon and wedge construction. Stone and Iron assets remain byte-for-byte unchanged.
+- Verified both unified frames have exactly two faces meeting at every welded mesh edge.
+
+Review: check the iron border beside the diamond handle opening; check the copper frame corners and pivot transition; compare all three handle tops in the elevated view.
+
+Follow-up verification: preview compilation and the Minecraft client run passed. Inspected the pneumatic before/after view, the diamond held view and the elevated view of all three basic handle tops.

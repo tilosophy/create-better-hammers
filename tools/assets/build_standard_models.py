@@ -40,7 +40,9 @@ for tier in ('stone','iron','diamond'):
             # Iron socket and wraparound band retain the gemstone head.
             # Both diamond striking ends stay exposed; no decorative fasteners.
             m.box('iron_handle_collar',[7.02,8.90,7.02],[8.98,10.60,8.98],'iron',.18,'y')
-            m.box('iron_head_cuff',[7.02,10.24,6.14],[8.98,14.71,9.86],'iron',.32,'x')
+            # Extend 10% of the original band width toward each striking end.
+            # Keep the handle eye unchanged so iron remains visible around it.
+            m.box('iron_head_cuff',[6.824,10.24,6.14],[9.176,14.71,9.86],'iron',.32,'x')
         else:
             m.box('handle_socket',[7.02,9.65,7.02],[8.98,10.54,8.98],tier,.18,'y')
         top=14.47
