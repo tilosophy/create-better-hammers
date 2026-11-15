@@ -1,44 +1,51 @@
-"""Give the three approved sprites physical depth without repainting their artwork.
-
-Requires Pillow. Run after the normal Gradle build has supplied Minecraft resources.
-"""
+"""Construct three workshop hammers from head, socket and tapered handle geometry."""
 from pathlib import Path
-from zipfile import ZipFile
-from PIL import Image
 import json
+import hammer_mesh as m
 
 ROOT = Path(__file__).resolve().parents[2]
-ASSETS = ROOT / 'src/main/resources/assets/create_better_hammers'
-with ZipFile(ROOT / 'build/moddev/artifacts/neoforge-21.1.233-client-extra-aka-minecraft-resources.jar') as archive:
-    generated = json.loads(archive.read('assets/minecraft/models/item/generated.json'))
-    handheld = json.loads(archive.read('assets/minecraft/models/item/handheld.json'))
-display = generated['display'] | handheld['display']
-display['gui'] = {'rotation': [10, 25, 0], 'translation': [0, 0, 0], 'scale': [.9, .9, .9]}
+MODELS = ROOT / 'src/main/resources/assets/create_better_hammers/models/item'
+# Reuse the established handheld poses; the inventory angle shows the new construction.
+display = json.loads((MODELS/'pneumatic_hammer.json').read_text())['display']
 
-for tier in ('stone', 'iron', 'diamond'):
-    sprite = Image.open(ASSETS / f'textures/item/{tier}_hammer.png').convert('RGBA')
-    assert sprite.size == (16, 16)
-    depths = {}
-    for y in range(16):
-        for x in range(16):
-            r, g, b, a = sprite.getpixel((x, y))
-            if not a:
-                continue
-            wooden = r > g and max(r, g, b) - min(r, g, b) > 15
-            # The original silhouette already supplies stepped head edges.
-            depths[x, y] = 1.5 if wooden else 3.5
-    elements = []
-    for (x, y), depth in depths.items():
-        faces = {
-            'south': {'uv': [x, y, x+1, y+1], 'texture': '#layer0'},
-            'north': {'uv': [x+1, y, x, y+1], 'texture': '#layer0'},
-        }
-        for side, dx, dy in [('west', -1, 0), ('east', 1, 0), ('up', 0, -1), ('down', 0, 1)]:
-            if depths.get((x+dx, y+dy), 0) < depth:
-                faces[side] = {'uv': [x+.1, y+.1, x+.9, y+.9], 'texture': '#layer0'}
-        elements.append({'from': [x, 15-y, 8-depth/2], 'to': [x+1, 16-y, 8+depth/2], 'faces': faces})
-    model = {'gui_light': 'side', 'ambientocclusion': False,
-             'textures': {'layer0': f'create_better_hammers:item/{tier}_hammer', 'particle': '#layer0'},
-             'display': display, 'elements': elements}
-    (ASSETS / f'models/item/{tier}_hammer.json').write_text(json.dumps(model, indent=2) + '\n')
-    print(f'{tier}: {len(elements)} occupied pixels; solid 3.5-unit head, 1.5-unit handle; original handheld transforms.')
+def handle():
+    m.group('tapered_wood_handle')
+    sections=[(-2.5,.91),(0.0,.85),(6.8,.67),(10.7,.72)]
+    rings=[]
+    for y,w in sections:
+        rings.append([(x,y,z) for x,z in m.rect(8-w,8-w,8+w,8+w,.17)])
+    m.group_bounds=([7.09,-2.5,7.09],[8.91,10.7,8.91])
+    m.face(rings[0],'wood');m.face(rings[-1][::-1],'wood')
+    for a,b in zip(rings,rings[1:]):
+        for i in range(8):
+            j=(i+1)%8
+            m.face([a[j],a[i],b[i],b[j]],'wood')
+
+for tier in ('stone','iron','diamond'):
+    m.reset()
+    handle()
+    if tier=='stone':
+        # Dressed stone with a few large irregularities, not a pixel-shaped outline.
+        outline=[(3.15,10.65),(3.65,10.10),(7.2,10.25),(10.9,10.05),
+                 (12.65,10.50),(13.02,11.10),(12.85,14.12),(12.30,14.73),
+                 (8.9,14.58),(5.3,14.82),(3.55,14.51),(3.02,13.94)]
+        m.prism('dressed_stone_head',outline,6.05,9.95,'stone')
+        top=14.68
+    else:
+        # A forged body between two broad striking ends, with chamfered edges.
+        m.box('head_body',[4.12,10.48,6.35],[11.88,14.47,9.65],tier,.22,'x')
+        for name,x0,x1 in [('forward_face',3.02,4.45),('rear_face',11.55,12.98)]:
+            m.box(name,[x0,10.20,6.10],[x1,14.75,9.90],tier,.43 if tier=='iron' else .58,'x')
+        m.box('handle_socket',[7.02,9.65,7.02],[8.98,10.54,8.98],tier,.18,'y')
+        top=14.47
+    # The seated wooden tenon and wedge establish how the head is attached.
+    m.box('handle_eye',[7.02,top-.04,7.06],[8.98,top+.045,8.94],'charcoal',.18,'y')
+    m.box('wood_tenon',[7.31,top+.025,7.32],[8.69,top+.17,8.68],'wood',.13,'y')
+    m.box('wood_wedge',[7.43,top+.16,7.88],[8.57,top+.24,8.12],'cogwood',.03,'y')
+    stem=tier+'_hammer'
+    m.save(stem)
+    model={'loader':'neoforge:obj','model':'create_better_hammers:models/item/'+stem+'.obj',
+           'automatic_culling':False,'shade_quads':True,'emissive_ambient':False,
+           'gui_light':'side','flip_v':True,
+           'textures':{'particle':'create_better_hammers:item/pneumatic_'+tier},'display':display}
+    (MODELS/(stem+'.json')).write_text(json.dumps(model,indent=2)+'\n')

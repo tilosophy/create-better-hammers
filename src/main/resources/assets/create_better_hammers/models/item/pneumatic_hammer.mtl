@@ -37,3 +37,13 @@ newmtl charcoal
 Kd 1 1 1
 Ka 0 0 0
 map_Kd create_better_hammers:item/pneumatic_charcoal
+
+newmtl stone
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_stone
+
+newmtl cogwood
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_cogwood
