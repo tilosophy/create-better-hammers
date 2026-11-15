@@ -4,7 +4,7 @@ Adds hand hammers to Create for making metal sheets without a stationary Mechani
 
 ## Playtest
 
-Current candidate: **0.1.0-alpha.9**. All four tiers now have physical depth. The Pneumatic Hammer keeps its approved hand pose, with revised materials, a recessed steel cog, wrench pivot and connected air pipe. This candidate also adds the Sturdy Sheet completion message and +1 powered attack damage. See the [short testing protocol](docs/playtests/alpha.9.md).
+Current candidate: **0.1.0-alpha.10**. Includes the approved workshop models: constructed Stone/Iron heads, a faceted Diamond head secured by an iron cuff, and Pneumatic's recessed wooden cog, continuous copper frame/pivot support and thicker underside pipe. Holding angles and alpha.9 gameplay are unchanged. See the [short testing protocol](docs/playtests/alpha.10.md).
 
 Install the same mod JAR on the Minecraft 1.21.1 client and dedicated server alongside NeoForge 21.1.233 or newer in the 21.1 series and Create 6.0.10.
 
