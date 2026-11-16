@@ -4,7 +4,7 @@ Adds hand hammers to Create for making metal sheets without a stationary Mechani
 
 ## Playtest
 
-Current candidate: **0.1.0-alpha.10**. Includes the approved workshop models: constructed Stone/Iron heads, a faceted Diamond head secured by an iron cuff, and Pneumatic's recessed wooden cog, continuous copper frame/pivot support and thicker underside pipe. Holding angles and alpha.9 gameplay are unchanged. See the [short testing protocol](docs/playtests/alpha.10.md).
+Current candidate: **0.1.0-alpha.11**. Includes the approved workshop wear: coarser handles, simpler wooden ends/wedges, rusted fasteners, quieter Diamond facets and stronger material-specific wear. The overlapping copper/brass surfaces are separated. Holding angles and gameplay are unchanged. See the [short testing protocol](docs/playtests/alpha.11.md).
 
 Install the same mod JAR on the Minecraft 1.21.1 client and dedicated server alongside NeoForge 21.1.233 or newer in the 21.1 series and Create 6.0.10.
 
