@@ -40,14 +40,16 @@ for tier in ('stone', 'iron', 'diamond', 'pneumatic'):
     root = json.loads(json.dumps(original))
     root['overrides'] = [
         {'predicate': {'custom_model_data': i}, 'model': 'create_better_hammers:item/' + tier + '_' + label}
-        for i, label in ((1, 'before'), (2, 'after'), (3, 'top'))]
+        for i, label in ((1, 'before'), (2, 'after'), (3, 'top'), (4, 'reverse'))]
     (models / (stem + '.json')).write_text(json.dumps(root))
-    for label in ('before', 'after', 'top'):
+    for label in ('before', 'after', 'top', 'reverse'):
         view = json.loads(json.dumps(original))
         view['display']['gui']['rotation'] = [12, 25, 45]
         view['display']['gui']['scale'] = [.8] * 3
         if label == 'top':
             view['display']['gui']['rotation'] = [65, 25, 45]
+        if label == 'reverse':
+            view['display']['gui']['rotation'] = [25, 205, 45]
         if label == 'before':
             view['model'] = 'hammer_review:models/item/' + stem + '.obj'
         (models / (tier + '_' + label + '.json')).write_text(json.dumps(view))

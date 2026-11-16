@@ -7,7 +7,7 @@ ASSETS = ROOT / 'src/main/resources/assets/create_better_hammers'
 MODELS = ASSETS / 'models/item'
 MODELS.mkdir(parents=True, exist_ok=True)
 
-materials = ['brass','steel','copper','wood','diamond','iron','brass_trim','charcoal','stone','cogwood']
+materials = ['brass','steel','copper','wood','diamond','iron','brass_trim','charcoal','stone','cogwood','fastener','endgrain','wedge']
 lines=['# Pneumatic hammer; logical head faces -X, rear wrench +X.',
        '# Geometry rotated -45 deg around the original sprite pivot, before applying unchanged handheld transforms.',
        'mtllib pneumatic_hammer.mtl','vt 0.5 0.5']
@@ -53,7 +53,13 @@ def face(points,mat):
         vv=.025+.95*(p[v]-lo[v])/max(.01,hi[v]-lo[v])
         if mat=='wood':
             uu=.15+.7*(p[u]-lo[u])/max(.01,hi[u]-lo[u])
-        if 'fastener' in current_group or 'rivet' in current_group or 'pin' in current_group:
+        if mat in ('fastener','endgrain','wedge'):
+            # Dedicated four-pixel swatches, with a uniform planar scale.
+            # Thin wedge faces sample a strip instead of crushing an entire tile.
+            span=max(.01,hi[u]-lo[u],hi[v]-lo[v])
+            uu=.125+.75*(p[u]-lo[u])/span
+            vv=.125+.75*(p[v]-lo[v])/span
+        elif 'fastener' in current_group or 'rivet' in current_group or 'pin' in current_group:
             uu=.3+.4*(p[u]-lo[u])/max(.01,hi[u]-lo[u])
             vv=.3+.4*(p[v]-lo[v])/max(.01,hi[v]-lo[v])
         if 'main_drive' in current_group or 'main_hub' in current_group:

@@ -49,8 +49,8 @@ for tier in ('stone','iron','diamond'):
         if tier=='diamond': top=14.71
     # The seated wooden tenon and wedge establish how the head is attached.
     m.box('handle_eye',[7.02,top-.04,7.06],[8.98,top+.045,8.94],'charcoal',.18,'y')
-    m.box('wood_tenon',[7.31,top+.025,7.32],[8.69,top+.17,8.68],'wood',.13,'y')
-    m.box('wood_wedge',[7.43,top+.16,7.88],[8.57,top+.24,8.12],'cogwood',.03,'y')
+    m.box('wood_tenon',[7.31,top+.025,7.32],[8.69,top+.17,8.68],'wood',.13,'y',caps={'high':'endgrain'})
+    m.box('wood_wedge',[7.43,top+.16,7.88],[8.57,top+.24,8.12],'wedge',.03,'y')
     stem=tier+'_hammer'
     m.save(stem)
     model={'loader':'neoforge:obj','model':'create_better_hammers:models/item/'+stem+'.obj',

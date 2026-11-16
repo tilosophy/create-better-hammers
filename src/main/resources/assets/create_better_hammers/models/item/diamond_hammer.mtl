@@ -47,3 +47,18 @@ newmtl cogwood
 Kd 1 1 1
 Ka 0 0 0
 map_Kd create_better_hammers:item/pneumatic_cogwood
+
+newmtl fastener
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_fastener
+
+newmtl endgrain
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_endgrain
+
+newmtl wedge
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_wedge
