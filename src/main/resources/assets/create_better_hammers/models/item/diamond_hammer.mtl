@@ -1,0 +1,64 @@
+newmtl brass
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_brass
+
+newmtl steel
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_steel
+
+newmtl copper
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_copper
+
+newmtl wood
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_wood
+
+newmtl diamond
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/diamond_hammer_gem
+
+newmtl iron
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_iron
+
+newmtl brass_trim
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_brass_trim
+
+newmtl charcoal
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_charcoal
+
+newmtl stone
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_stone
+
+newmtl cogwood
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_cogwood
+
+newmtl fastener
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_fastener
+
+newmtl endgrain
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_endgrain
+
+newmtl wedge
+Kd 1 1 1
+Ka 0 0 0
+map_Kd create_better_hammers:item/pneumatic_wedge

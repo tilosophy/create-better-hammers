@@ -1,0 +1,23 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.neoforged.moddev') {
+        def preview = new File(project.projectDir, 'build/visual-review')
+        project.sourceSets.main.java.srcDir(new File(project.projectDir, 'tools/preview/java'))
+        project.configurations.named('runtimeClasspath').configure {
+            exclude group: 'com.simibubi.create'
+            exclude group: 'com.tterrag.registrate'
+            exclude group: 'dev.engine-room.flywheel'
+            exclude group: 'net.createmod.ponder'
+        }
+        project.dependencies.add('runtimeOnly', project.files(project.findProperty('fullCreateJar')))
+        project.neoForge.runs.create('visualPreview') {
+            client()
+            gameDirectory = preview
+            ['--quickPlaySingleplayer', 'preview', '--width', '1280', '--height', '720'].each { programArgument it }
+        }
+        project.neoForge.runs.create('previewWorld') {
+            server()
+            gameDirectory = new File(preview, 'saves')
+            programArgument '--nogui'
+        }
+    }
+}

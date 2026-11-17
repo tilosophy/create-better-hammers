@@ -1,0 +1,22 @@
+// Isolated test sources: never included by a normal build.
+// Run with -I tools/gametest/init.gradle -PfullCreateJar=/path/to/create-6.0.10.jar runGameTestServer
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.neoforged.moddev') {
+        def smoke = new File(project.projectDir, 'tools/gametest')
+        project.sourceSets.main.java.srcDir(new File(smoke, 'java'))
+        project.sourceSets.main.resources.srcDir(new File(smoke, 'resources'))
+        project.configurations.named('runtimeClasspath').configure {
+            exclude group: 'com.simibubi.create'
+            exclude group: 'com.tterrag.registrate'
+            exclude group: 'dev.engine-room.flywheel'
+            exclude group: 'net.createmod.ponder'
+        }
+        project.dependencies.add('runtimeOnly', project.files(project.findProperty('fullCreateJar')))
+        project.neoForge.runs.create('gameTestServer') {
+            type = 'gameTestServer'
+            gameDirectory = new File(project.projectDir, 'build/gametest-alpha9')
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'create_better_hammers'
+            systemProperty 'hammerSmoke.withDeco', 'false'
+        }
+    }
+}
