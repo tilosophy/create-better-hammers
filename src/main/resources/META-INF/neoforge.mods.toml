@@ -7,6 +7,8 @@ modId="create_better_hammers"
 version="${modVersion}"
 displayName="Create Better Hammers"
 authors="tilosophy"
+logoFile="logo.png"
+displayURL="https://github.com/tilosophy/create-better-hammers"
 description="Hand-hammer Create sheets on raised work surfaces."
 
 [[dependencies.create_better_hammers]]

@@ -4,9 +4,10 @@ plugins {
 }
 
 group = 'io.github.tilosophy'
-version = '0.1.0-alpha.11'
+version = '0.1.0-beta.1'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.withSourcesJar()
 
 repositories {
     maven { url = 'https://maven.createmod.net' }
@@ -37,6 +38,12 @@ neoForge {
 
 tasks.named("jar", Jar) {
     from("LICENSE")
+    from("THIRD_PARTY_NOTICES.md")
+}
+
+tasks.named("sourcesJar", Jar) {
+    from("LICENSE")
+    from("THIRD_PARTY_NOTICES.md")
 }
 
 tasks.named('processResources', ProcessResources) {

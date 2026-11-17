@@ -1,21 +1,22 @@
-# Release readiness after alpha.11 packaging
+# Beta release readiness
 
-This is a remaining-work review, not authorization to publish or change the approved feature set.
+Target: **0.1.0-beta.1** for Minecraft 1.21.1 / NeoForge.
 
-## Already established
+## Owner decisions and checks
 
-- Four tiers, material progression, raised work surfaces and shared sheet cooldown are implemented.
-- Sturdy Sheet completion text, Create block rotation/pickup and powered/unpowered behavior have player confirmations.
-- Automated dedicated-server tests cover progression, recipes, cooldown/resource accounting, combat, shield disabling, supported enchantments, pneumatic air use, two-strike crafting and full-inventory rejection.
-- Original model/material source and generation notes are checked into the repository. MIT license is present.
-- Approved model proportions and holding transforms are preserved; alpha.11 packages the wear polish.
+- Alpha.11 models and textures approved.
+- Swings, Z-fighting correction, left-handed holding, inventory display and sheet crafting confirmed by the owner.
+- Actual two-player dedicated-server session explicitly deferred for this beta.
+- Supplied icon and banner approved for use unchanged.
+- Screenshots reported complete by the owner; supplied separately for the hosting page.
+- Beta designation and merging into `main` explicitly authorized on 2026-11-17.
 
-## Still to confirm before public release
+## Prepared release materials
 
-1. Player approval of alpha.11 in the actual modpack/shader setup, including the previously flickering copper/brass seam and alternate item views.
-2. One short real multiplayer session on a dedicated server with two players: simultaneous crafting, visible swings/results, wrench interactions, tank depletion/removal and reconnecting after a partial Sturdy Sheet craft. The existing automated server tests do not substitute for this client/server check.
-3. Final release audit: check the exact supported Create/NeoForge versions, current dependency metadata, any notices needed for reused APIs/assets, and the packaged runtime JAR. Keep compatibility claims limited to versions actually verified, especially the Create-specific wrench injections.
-4. Release preparation: agree on the public version, finalize the description/player guide and screenshots, choose an icon/banner if wanted, and prepare the hosting page. The repository currently has no dedicated mod icon/banner or release-page draft. README and playtest notes can supply most of the guide content.
-5. User approval to merge, tag and publish the verified release artifact. No public release is created by this playtest build.
+- `RELEASE_DESCRIPTION.md`: listing copy.
+- `PLAYER_GUIDE.md`: installation, recipes, material rules, controls, backtank costs and troubleshooting.
+- `RELEASE_NOTES.md`: first beta scope and validation limits.
+- `../art/listing/`: exact supplied icon and banner.
+- `../THIRD_PARTY_NOTICES.md`: asset provenance and external dependency attribution.
 
-No further gameplay feature is proposed as a release prerequisite. Extra tiers, integrations and cosmetic animation can remain future work.
+The final build and package evidence belongs in `RELEASE_AUDIT.md`. The hosting-page upload is a separate publication step; a repository merge alone does not publish the mod to CurseForge.

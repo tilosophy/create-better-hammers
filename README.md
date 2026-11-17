@@ -2,11 +2,21 @@
 
 Adds hand hammers to Create for making metal sheets without a stationary Mechanical Press.
 
-## Playtest
+![Create: Better Hammers](art/listing/banner.png)
 
-Current candidate: **0.1.0-alpha.11**. Includes the approved workshop wear: coarser handles, simpler wooden ends/wedges, rusted fasteners, quieter Diamond facets and stronger material-specific wear. The overlapping copper/brass surfaces are separated. Holding angles and gameplay are unchanged. See the [short testing protocol](docs/playtests/alpha.11.md).
+## First public beta
 
-Install the same mod JAR on the Minecraft 1.21.1 client and dedicated server alongside NeoForge 21.1.233 or newer in the 21.1 series and Create 6.0.10.
+**0.1.0-beta.1** packages the approved alpha.11 gameplay and weathered hammer assets with the supplied icon and release documentation. Both client and server need the same runtime JAR.
+
+- [Player guide and recipes](docs/PLAYER_GUIDE.md)
+- [Release description](docs/RELEASE_DESCRIPTION.md)
+- [Release notes](docs/RELEASE_NOTES.md)
+- [Verification record](docs/RELEASE_AUDIT.md)
+- [License](LICENSE) and [attribution](THIRD_PARTY_NOTICES.md)
+
+Target: **Minecraft 1.21.1**, **NeoForge 21.1.233**, **Create 6.0.10**, **Java 21**. Metadata permits NeoForge 21.1.233–21.1.x and Create 6.0.10–6.0.x; only the stated development combination is the validation baseline. A real two-player playtest remains deferred for this beta.
+
+## Features
 
 | Hammer | Head material | Sheets | Durability |
 | --- | --- | --- | ---: |
